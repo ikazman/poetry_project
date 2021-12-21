@@ -8,7 +8,8 @@ class ReadAndClean:
     """Класс для чтения и очищения корпуса."""
 
     def __init__(self, file):
-        self.path = os.environ.get('PATH_TO_FILE')
+        # self.path = os.environ.get('PATH_TO_FILE')
+        self.path = '/home/ikazman/Документы/GitHub/poetry_project/data/'
         self.text = None
         self.processed_text = None
         self.file_name = file
@@ -21,10 +22,13 @@ class ReadAndClean:
 
     def clean_text(self):
         """Очищаем текст от знаков препинаний, приводим к одному регистру."""
-        print('Очищаем текст от знаков препинаний, приводим к одному регистру.')
         punctuation = string.punctuation + '«»'
         text_without_punct = ''.join(
             [char for char in self.text if char not in punctuation])
 
         self.processed_text = [word.lower() for word
                                in text_without_punct.split()]
+
+    def process_text(self):
+        self.read_corpus()
+        self.clean_text()
