@@ -55,12 +55,12 @@ class Poet:
 
     def haiuku_line(self, end_prev_line, target_syls):
         """Генерируем строку для хайку."""
-        line = '2/3'
+        its_first_line = False
         line_syls = 0
         current_line = []
 
         if len(end_prev_line) == 0:
-            line = '1'
+            its_first_line = True
             word, num_syls = self.pick_the_word()
             current_line.append(word)
             line_syls += num_syls
@@ -110,7 +110,7 @@ class Poet:
         end_prev_line = []
         end_prev_line.extend(current_line[-2:])
 
-        if line == '1':
+        if its_first_line:
             final_line = current_line[:]
         else:
             final_line = current_line[2:]
