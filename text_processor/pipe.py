@@ -3,13 +3,14 @@ import os
 
 from dotenv import load_dotenv
 
+load_dotenv()
+
 
 class ReadAndClean:
     """Класс для чтения и очищения корпуса."""
 
     def __init__(self, file):
-        # self.path = os.environ.get('PATH_TO_FILE')
-        self.path = '/home/ikazman/Документы/GitHub/poetry_project/data/'
+        self.path = os.environ.get('PATH_TO_FILE')
         self.text = None
         self.processed_text = None
         self.file_name = file
