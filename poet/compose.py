@@ -12,6 +12,7 @@ class Poet:
         self.length = len(corpus)
         self.dict_word_to_word = defaultdict(list)
         self.dict_word_to_two_word = defaultdict(list)
+        self.poem = None
 
     def map_word_to_word(self):
         """Размечиваем второе слово после первого."""
@@ -57,7 +58,7 @@ class Poet:
         first_word = random.choice(self.corpus)
         num_syls = syllables_counter.syllables_counter(first_word)
         if num_syls > 4:
-            self.pick_the_word(self.corpus)
+            self.pick_the_word()
         else:
             return(first_word, num_syls)
 
@@ -91,14 +92,14 @@ class Poet:
         while True:
             prefix = ' '.join([current_line[-2], current_line[-1]])
             word_choices = self.word_after_double(prefix,
-                                                    line_syls,
-                                                    target_syls)
+                                                  line_syls,
+                                                  target_syls)
             while len(word_choices) == 0:
                 idx = random.randint(0, self.length - 2)
                 prefix = ' '.join([self.corpus[idx], self.corpus[idx + 1]])
                 word_choices = self.word_after_double(prefix,
-                                                        line_syls,
-                                                        target_syls)
+                                                      line_syls,
+                                                      target_syls)
             word = random.choice(word_choices)
             num_syls = syllables_counter.syllables_counter(word)
 
@@ -110,7 +111,7 @@ class Poet:
             elif line_syls + num_syls == target_syls:
                 current_line.append(word)
                 break
-        
+
         end_prev_line = []
         end_prev_line.extend(current_line[-2:])
 
@@ -118,5 +119,21 @@ class Poet:
             final_line = current_line[:]
         else:
             final_line = current_line[2:]
-        
+
         return final_line, end_prev_line
+
+    def real_poetry_generator(self):
+        """Генерируем весь стих."""
+        self.poem = []
+        end_prev_line = []
+        self.map_word_to_word()
+        self.map_word_to_two_words()
+        first_line, end_prev_line_first = self.haiuku_line(end_prev_line, 5)
+        self.poem.append(first_line)
+        line, end_prev_line_second = self.haiuku_line(end_prev_line_first, 7)
+        self.poem.append(line)
+        line, _ = self.haiuku_line(end_prev_line_second, 5)
+        self.poem.append(line)
+
+        for line in self.poem:
+            print(' '.join(line))

@@ -3,17 +3,12 @@ VOWELS = 'АЕЁИОУЫЭЮЯаеёиоуыэюя'
 def syllables_counter(phrase):
     """Считаем число слогов в слове."""
     num_of_syllas = 0
-    num_of_vowels = 0
     phrase = phrase.casefold().strip().split()
 
     for word in phrase:
         for char in word:
             if char in VOWELS:
                 num_of_syllas += 1
-                num_of_vowels += 1
-        if num_of_vowels == 0:
-            num_of_syllas += 1
-
     return num_of_syllas     
 
 def main():

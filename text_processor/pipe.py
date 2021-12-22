@@ -1,6 +1,3 @@
-import string
-import os
-
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -10,7 +7,7 @@ class ReadAndClean:
     """Класс для чтения и очищения корпуса."""
 
     def __init__(self, file):
-        self.path = os.environ.get('PATH_TO_FILE')
+        self.path = 'data/'
         self.text = None
         self.processed_text = None
         self.file_name = file
@@ -23,7 +20,7 @@ class ReadAndClean:
 
     def clean_text(self):
         """Очищаем текст от знаков препинаний, приводим к одному регистру."""
-        punctuation = string.punctuation + '«»'
+        punctuation = '«»"'
         text_without_punct = ''.join(
             [char for char in self.text if char not in punctuation])
 
@@ -31,5 +28,6 @@ class ReadAndClean:
                                in text_without_punct.split()]
 
     def process_text(self):
+        """Функция для запуска пайплайна."""
         self.read_corpus()
         self.clean_text()
