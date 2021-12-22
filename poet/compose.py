@@ -31,21 +31,14 @@ class Poet:
                 suffix = self.corpus[idx + 2]
                 self.dict_word_to_two_word[key].append(suffix)
 
-    def word_after_single(self, prefix, current_syls, target_syls):
-        """Возвращаем все допустимые варианты после первого слова из копуса."""
+    def word_after(self, prefix, current_syls, target_syls, cnt='double'):
+        """Возвращаем все допустимые варианты слова из копуса."""
         accepted_words = []
-        suffixes = self.dict_word_to_word.get(prefix)
-        if suffixes:
-            for candidate in suffixes:
-                num_syls = syllables_counter.syllables_counter(candidate)
-                if current_syls + num_syls <= target_syls:
-                    accepted_words.append(candidate)
-        return accepted_words
+        if cnt == 'single':
+            suffixes = self.dict_word_to_word.get(prefix)
+        else:
+            suffixes = self.dict_word_to_two_word.get(prefix)
 
-    def word_after_double(self, prefix, current_syls, target_syls):
-        """Возвращаем все допустимые варианты после пары слов из копуса."""
-        accepted_words = []
-        suffixes = self.dict_word_to_two_word.get(prefix)
         if suffixes:
             for candidate in suffixes:
                 num_syls = syllables_counter.syllables_counter(candidate)
@@ -73,12 +66,16 @@ class Poet:
             word, num_syls = self.pick_the_word()
             current_line.append(word)
             line_syls += num_syls
-            word_choices = self.word_after_single(word, line_syls, target_syls)
+            word_choices = self.word_after(word,
+                                           line_syls,
+                                           target_syls,
+                                           'single')
             while len(word_choices) == 0:
                 prefix = random.choice(self.corpus)
-                word_choices = self.word_after_single(prefix,
-                                                      line_syls,
-                                                      target_syls)
+                word_choices = self.word_after(prefix,
+                                               line_syls,
+                                               target_syls,
+                                               'single')
             word = random.choice(word_choices)
             num_syls = syllables_counter.syllables_counter(word)
             line_syls += num_syls
@@ -91,15 +88,15 @@ class Poet:
 
         while True:
             prefix = ' '.join([current_line[-2], current_line[-1]])
-            word_choices = self.word_after_double(prefix,
-                                                  line_syls,
-                                                  target_syls)
+            word_choices = self.word_after(prefix,
+                                           line_syls,
+                                           target_syls)
             while len(word_choices) == 0:
                 idx = random.randint(0, self.length - 2)
                 prefix = ' '.join([self.corpus[idx], self.corpus[idx + 1]])
-                word_choices = self.word_after_double(prefix,
-                                                      line_syls,
-                                                      target_syls)
+                word_choices = self.word_after(prefix,
+                                               line_syls,
+                                               target_syls)
             word = random.choice(word_choices)
             num_syls = syllables_counter.syllables_counter(word)
 
