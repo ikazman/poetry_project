@@ -14,17 +14,15 @@ class Poet:
         self.dict_word_to_two_word = defaultdict(list)
         self.poem = None
 
-    def map_word_to_word(self):
-        """Размечиваем второе слово после первого."""
+    def map_words(self):
+        """Размечиваем последовательности для первого и второго слов."""
         limit = self.length - 1
         for idx, word in enumerate(self.corpus):
             if idx < limit:
                 suffix = self.corpus[idx + 1]
                 self.dict_word_to_word[word].append(suffix)
+        limit -= 1
 
-    def map_word_to_two_words(self):
-        """Размечиваем третье слово после первых двух."""
-        limit = self.length - 2
         for idx, word in enumerate(self.corpus):
             if idx < limit:
                 key = ' '.join([word, self.corpus[idx + 1]])
@@ -123,8 +121,7 @@ class Poet:
         """Генерируем весь стих."""
         self.poem = []
         end_prev_line = []
-        self.map_word_to_word()
-        self.map_word_to_two_words()
+        self.map_words()
         first_line, end_prev_line_first = self.haiuku_line(end_prev_line, 5)
         self.poem.append(first_line)
         line, end_prev_line_second = self.haiuku_line(end_prev_line_first, 7)
