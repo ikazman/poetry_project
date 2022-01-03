@@ -8,6 +8,8 @@ def main():
     poet = compose.Poet(corpus.processed_text)
     try:
         poet.real_poetry_generator()
+        print()
+        poet.simplify_it()
     except:
         print('Поэт пьян: перезапустите генератор.')
         return

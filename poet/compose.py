@@ -3,6 +3,9 @@ from collections import defaultdict
 
 from syllables_counter import syllables_counter
 
+import spacy
+import markovify
+
 
 class Poet:
     """Класс для генерации строк."""
@@ -12,6 +15,11 @@ class Poet:
         self.length = len(corpus)
         self.dict_word_to_word = defaultdict(list)
         self.dict_word_to_two_word = defaultdict(list)
+        self.nlp = spacy.load('ru_core_news_sm')
+        self.corpus_doc = self.nlp(' '.join(self.corpus))
+        self.corpus_sents = ' '.join([sent.text for sent
+                                      in self.corpus_doc.sents
+                                      if len(sent.text) > 1])
         self.poem = None
 
     def map_words(self):
@@ -131,3 +139,18 @@ class Poet:
 
         for line in self.poem:
             print(' '.join(line))
+
+    def markovify_line_generator(self, target_syls=5):
+        """Используем markovify для генерации строки."""
+        haiku_generator = markovify.Text(self.corpus_sents, state_size=1)
+        num_syls = 0
+        while num_syls != target_syls:
+            sentence = haiku_generator.make_sentence(tries=1000)
+            num_syls = syllables_counter.syllables_counter(sentence)
+        print(sentence)
+
+    def simplify_it(self):
+        """Генерируем полный стих с помощью markovify."""
+        self.markovify_line_generator(target_syls=5)
+        self.markovify_line_generator(target_syls=7)
+        self.markovify_line_generator(target_syls=5)
