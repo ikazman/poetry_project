@@ -28,7 +28,11 @@ $ pip install --upgrade pip
 ```bash
 $ pip install -r requirements.txt
 ```
-4) Запустить скрипт:
+4) Скачать и установить корпус текстов:
+```bash
+$ python -m spacy download ru_core_news_sm
+```
+5) Запустить скрипт:
 ```bash
 $ python haiku_generator.py 
 ```
